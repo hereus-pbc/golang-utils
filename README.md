@@ -1,4 +1,4 @@
-# Cryptography for Go
+# Golang shared packages of HereUS
 
 This module is developed for internal use.
 

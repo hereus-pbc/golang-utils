@@ -1,4 +1,4 @@
-module github.com/hereus-pbc/go-cryptography
+module github.com/hereus-pbc/golang-utils
 
 go 1.24.5
 
