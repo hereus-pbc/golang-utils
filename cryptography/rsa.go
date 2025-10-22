@@ -6,7 +6,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"strings"
 )
 
 func RsaPemToPublicKey(pemStr string) (*rsa.PublicKey, error) {

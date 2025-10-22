@@ -61,7 +61,7 @@ func VerifyHttpSignature(r *http.Request, sigHeader string, actorPublicKeyPem st
 	}
 
 	// Convert the PEM-encoded public key to rsa.PublicKey
-	pubKey, err := PemToPublicKey(actorPublicKeyPem)
+	pubKey, err := RsaPemToPublicKey(actorPublicKeyPem)
 	if err != nil {
 		return fmt.Errorf("failed to parse public key: %w", err)
 	}
