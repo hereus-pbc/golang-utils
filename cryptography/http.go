@@ -11,6 +11,17 @@ import (
 	"strings"
 )
 
+func parseSigHeader(header string) map[string]string {
+	out := map[string]string{}
+	for _, part := range strings.Split(header, ",") {
+		kv := strings.SplitN(strings.TrimSpace(part), "=", 2)
+		if len(kv) == 2 {
+			out[kv[0]] = strings.Trim(kv[1], `"`)
+		}
+	}
+	return out
+}
+
 func ComputeSha256DigestBase64(data []byte) string {
 	hash := sha256.Sum256(data)
 	return base64.StdEncoding.EncodeToString(hash[:])

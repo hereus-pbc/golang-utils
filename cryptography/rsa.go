@@ -9,18 +9,7 @@ import (
 	"strings"
 )
 
-func parseSigHeader(header string) map[string]string {
-	out := map[string]string{}
-	for _, part := range strings.Split(header, ",") {
-		kv := strings.SplitN(strings.TrimSpace(part), "=", 2)
-		if len(kv) == 2 {
-			out[kv[0]] = strings.Trim(kv[1], `"`)
-		}
-	}
-	return out
-}
-
-func PemToPublicKey(pemStr string) (*rsa.PublicKey, error) {
+func RsaPemToPublicKey(pemStr string) (*rsa.PublicKey, error) {
 	block, _ := pem.Decode([]byte(pemStr))
 	if block == nil {
 		return nil, errors.New("no PEM block found")
@@ -36,7 +25,7 @@ func PemToPublicKey(pemStr string) (*rsa.PublicKey, error) {
 	return rsaPub, nil
 }
 
-func PemToPrivateKey(pemStr string) (*rsa.PrivateKey, error) {
+func RsaPemToPrivateKey(pemStr string) (*rsa.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(pemStr))
 	if block == nil {
 		return nil, errors.New("no PEM block found")
@@ -46,4 +35,26 @@ func PemToPrivateKey(pemStr string) (*rsa.PrivateKey, error) {
 		return nil, fmt.Errorf("bad private key: %w", err)
 	}
 	return private, nil
+}
+
+func RsaPublicKeyToPem(rsaPublicKey *rsa.PublicKey) (string, error) {
+	rsaPublicDerBytes, err := x509.MarshalPKIXPublicKey(&rsaPublicKey)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal RSA public key: %w", err)
+	}
+	rsaPublicPemBlock := &pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: rsaPublicDerBytes,
+	}
+	rsaPublicPemBytes := pem.EncodeToMemory(rsaPublicPemBlock)
+	return string(rsaPublicPemBytes), nil
+}
+
+func RsaPrivateKeyToPem(rsaPrivateKey *rsa.PrivateKey) string {
+	rsaPrivateDerBytes := x509.MarshalPKCS1PrivateKey(rsaPrivateKey)
+	rsaPrivatePemBlock := &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: rsaPrivateDerBytes,
+	}
+	return string(pem.EncodeToMemory(rsaPrivatePemBlock))
 }
