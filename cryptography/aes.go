@@ -1,4 +1,4 @@
-package password_encryption
+package cryptography
 
 import (
 	"crypto/aes"
