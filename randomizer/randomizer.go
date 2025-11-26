@@ -20,3 +20,7 @@ func Random64Byte() []byte {
 func Random128ByteString() string {
 	return hex.EncodeToString(RandomGivenByte(128))
 }
+
+func Random32ByteString() string {
+	return hex.EncodeToString(RandomGivenByte(32))
+}
