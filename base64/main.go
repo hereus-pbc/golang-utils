@@ -1,5 +1,10 @@
 package base64
 
+import (
+	"bytes"
+	"encoding/base64"
+)
+
 func Encode(data []byte) string {
 	var buf bytes.Buffer
 	enc := base64.NewEncoder(base64.StdEncoding, &buf)
