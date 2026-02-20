@@ -7,3 +7,7 @@ type PeerInfo struct {
 	Gid uint32
 	Pid int32
 }
+
+func GetPeerInfo(c *net.UnixConn) (*PeerInfo, error) {
+	return getPeerInfo(c)
+}
